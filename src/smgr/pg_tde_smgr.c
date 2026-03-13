@@ -122,6 +122,16 @@ tde_smgr_create_key_redo(const RelFileLocator *rlocator)
 {
 	InternalKey key;
 
+	/*
+	 * In some cases there will already be data in the relation when we replay
+	 * this WAL record during crash recovery, which means we need to keep the
+	 * key that's already there. Two such cases are wal_level=minimal which
+	 * will not always create a FPW for the new relation, and reinit of
+	 * unlogged tables which will always use the existing init fork file.
+	 */
+	if (pg_tde_has_smgr_key(*rlocator))
+		return;
+
 	pg_tde_generate_internal_key(&key, KeyLength);
 
 	pg_tde_save_smgr_key(*rlocator, &key);
