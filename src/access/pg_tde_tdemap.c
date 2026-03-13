@@ -215,7 +215,7 @@ pg_tde_free_key_map_entry(const RelFileLocator rlocator)
 		if (!pg_tde_read_one_map_entry(map_fd, &map_entry, &curr_pos))
 			break;
 
-		if (map_entry.type == MAP_ENTRY_TYPE_KEY && map_entry.spcOid == rlocator.spcOid && map_entry.relNumber == rlocator.relNumber)
+		if (map_entry.type == MAP_ENTRY_TYPE_KEY && map_entry.relNumber == rlocator.relNumber)
 		{
 			TDEMapEntry empty_map_entry = {
 				.type = MAP_ENTRY_TYPE_EMPTY,
@@ -471,7 +471,7 @@ pg_tde_replace_key_map_entry(const RelFileLocator *rlocator, const InternalKey *
 			break;
 		}
 
-		if (read_map_entry.spcOid == rlocator->spcOid && read_map_entry.relNumber == rlocator->relNumber)
+		if (read_map_entry.relNumber == rlocator->relNumber)
 		{
 			write_pos = prev_pos;
 			break;
@@ -509,7 +509,7 @@ pg_tde_find_map_entry(const RelFileLocator *rlocator, char *db_map_path, TDEMapE
 
 	while (pg_tde_read_one_map_entry(map_fd, map_entry, &curr_pos))
 	{
-		if (map_entry->type == MAP_ENTRY_TYPE_KEY && map_entry->spcOid == rlocator->spcOid && map_entry->relNumber == rlocator->relNumber)
+		if (map_entry->type == MAP_ENTRY_TYPE_KEY && map_entry->relNumber == rlocator->relNumber)
 		{
 			found = true;
 			break;
