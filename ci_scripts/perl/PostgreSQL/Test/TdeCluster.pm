@@ -48,7 +48,7 @@ my %smgr_skip = (
 	  'tries to use FILE_COPY strategy for database creation with encrypted objects in the template',
 	'src/test/recovery/t/016_min_consistency.pl' =>
 	  'reads LSN directly from relation files',
-	'src/test/recovery/t/032_relfilenode_reuse.pl' => 'invalid page in block',
+#	'src/test/recovery/t/032_relfilenode_reuse.pl' => 'invalid page in block',
 	'src/test/recovery/t/043_no_contrecord_switch.pl' =>
 	  'uses write_wal to hack wal directly');
 

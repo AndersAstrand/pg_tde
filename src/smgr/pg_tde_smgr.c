@@ -270,6 +270,29 @@ tde_mdwritev(SMgrRelation reln, ForkNumber forknum, BlockNumber blocknum,
  * to abort the transaction.
  */
 static void
+tde_mdclose(SMgrRelation reln, ForkNumber forknum)
+{
+	TDESMgrRelation *tdereln = (TDESMgrRelation *) reln;
+
+	mdclose(reln, forknum);
+
+	/*
+	 * Reset the cached encryption key so it will be reloaded from the key
+	 * map on the next I/O.  This handles the case where a relation is dropped
+	 * and recreated with the same relfilelocator but a new key — the
+	 * SMgrRelation struct can survive across the DROP+recreate in a backend
+	 * with a long-running transaction, and without this reset it would keep
+	 * using the stale key when flushing dirty buffers.
+	 *
+	 * Only reset after loading the key (RELATION_KEY_AVAILABLE), and only for
+	 * the main fork since that is where the key is tracked.
+	 */
+	if (forknum == MAIN_FORKNUM &&
+		tdereln->encryption_status == RELATION_KEY_AVAILABLE)
+		tdereln->encryption_status = RELATION_KEY_NOT_AVAILABLE;
+}
+
+static void
 tde_mdunlink(RelFileLocatorBackend rlocator, ForkNumber forknum, bool isRedo)
 {
 	mdunlink(rlocator, forknum, isRedo);
@@ -595,7 +618,7 @@ static const struct f_smgr tde_smgr = {
 	.smgr_init = mdinit,
 	.smgr_shutdown = NULL,
 	.smgr_open = tde_mdopen,
-	.smgr_close = mdclose,
+	.smgr_close = tde_mdclose,
 	.smgr_create = tde_mdcreate,
 	.smgr_exists = mdexists,
 	.smgr_unlink = tde_mdunlink,
