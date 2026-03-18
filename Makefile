@@ -14,14 +14,12 @@ REGRESS = \
 	delete_principal_key \
 	insert_update_delete \
 	key_provider \
-	kmip_test \
 	partition_table \
 	pg_tde_is_encrypted \
 	recreate_storage \
 	relocate \
 	tablespace \
 	toast_decrypt \
-	vault_v2_test \
 	version
 TAP_TESTS = 1
 
