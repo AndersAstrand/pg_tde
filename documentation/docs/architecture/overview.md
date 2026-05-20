@@ -22,7 +22,7 @@ The following sections break down the key architectural components of this desig
 * Table data files
 * Indexes
 * Sequences
-* Temporary tables
+* Temporary tables (when created with the `tde_heap` access method; see [Limitations](../index/tde-limitations.md) for what is not encrypted)
 * Write Ahead Log (WAL)
 
 ## Main components
@@ -31,7 +31,7 @@ The main components of `pg_tde` are:
 
 * **Core server changes** focus on making the server more extensible, allowing the main logic of `pg_tde` to remain separate, as an extension. Core changes also add encryption-awareness to some command line tools that have to work directly with encrypted tables or encrypted WAL files. 
 
-    You can find the source code [here :octicons-link-external-16:](https://github.com/percona/postgres/tree/{{tdebranch}}).
+    You can find the [Percona Server for PostgreSQL source code :octicons-link-external-16:](https://github.com/percona/postgres) on GitHub.
 
 * The **`pg_tde` extension** implements the encryption code by hooking into the extension points introduced in the core changes, and the already existing extension points in the PostgreSQL server.
 

@@ -40,7 +40,7 @@ This page explains how to install `pg_tde` for [Percona Distribution for Postgre
 4. Enable the Percona Distribution for PostgreSQL repository
 
     ```{.bash data-prompt="$"}
-    sudo percona-release enable-only ppg-{{pgversion17}}
+    sudo percona-release enable-only ppg-{{pgversion}}
     ```
 
 5. Update the local cache
@@ -57,10 +57,10 @@ After all [preconditions](#preconditions) are met, install the `pg_tde` package:
 sudo apt-get install -y percona-pg-tde(pg-version)
 ```
 
-### Example for PostgreSQL {{pgversion17}}
+### Example for PostgreSQL {{pgversion}}
 
 ```{.bash data-prompt="$"}
-sudo apt-get install -y percona-pg-tde{{pgversion17}}
+sudo apt-get install -y percona-pg-tde{{pgversion}}
 ```
 
 ## Next steps

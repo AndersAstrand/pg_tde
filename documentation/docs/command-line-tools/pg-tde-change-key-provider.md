@@ -22,10 +22,10 @@ pg_tde_change_key_provider [-D <datadir>] <dbOid> <provider_name> <new_provider_
 
 ## Parameter description
 
-* [optional] `<datadir>` is the data directory.`pg_tde` uses the `$PGDATA` environment variable if this is not specified
+* [optional] `<datadir>` is the data directory. `pg_tde` uses the `$PGDATA` environment variable if this is not specified
+* `<dbOid>` is the OID of the database whose provider should be changed. Use `1664` for global key providers.
 * `<provider_name>` is the name you assigned to the key provider
-* `<new_provider_type>` can be a `file`, `vault` or `kmip`
-* `<dbOid>`
+* `<new_provider_type>` can be `file`, `vault-v2` or `kmip`
 
 Depending on the provider type, the additional parameters are:
 

@@ -70,9 +70,9 @@ The following tools are currently unsupported with `pg_tde` WAL encryption:
 The following tools have been tested and verified by Percona to work with `pg_tde` WAL encryption:
 
 * Patroni, for an example configuration see the following [Patroni configuration file](#example-patroni-configuration)
-* `pg_tde_basebackup` (with `--wal-method=stream` or `--wal-method=none`), for details on using `pg_tde_basebackup` with WAL encryption, see [Backup with WAL encryption enabled](../how-to/backup-wal-enabled.md)
+* `pg_tde_basebackup` (with `--wal-method=stream`, `--wal-method=fetch`, or `--wal-method=none`), for details on using `pg_tde_basebackup` with WAL encryption, see [Backup with WAL encryption enabled](../how-to/backup-wal-enabled.md)
 * `pg_tde_resetwal`
-* `pg_tde_rewind`
+* `pg_tde_rewind` (with the corruption caveat described in [`pg_rewind` and `pg_tde_rewind`](#pg_rewind-and-pg_tde_rewind) above)
 * `pg_tde_upgrade`
 * `pg_tde_waldump`
 * pgBackRest (asynchronous archiving is NOT supported with encrypted WAL)

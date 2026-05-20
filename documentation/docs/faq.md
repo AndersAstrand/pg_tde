@@ -25,9 +25,9 @@ Using TDE helps you avoid the following risks:
 * Legal consequences and financial losses for non-compliance with data protection regulations
 * Internal threats by misusing unencrypted sensitive data
 
-If to translate sensitive data to files stored in your database, these are user data in tables, temporary files, WAL files. TDE has you covered encrypting all these files.
+The sensitive data stored as files in your database includes user data in tables, indexes, and WAL files. TDE encrypts all of these when the corresponding tables use the `tde_heap` access method, and WAL encryption is enabled.
 
-`pg_tde` does not encrypt system catalogs yet. This means that statistics data and database metadata are not encrypted.
+`pg_tde` does not encrypt system catalogs yet. This means that statistics data and database metadata are not encrypted. Temporary files written when queries exceed `work_mem` (for example during sorts or hash joins) are also not encrypted. See [Limitations of pg_tde](index/tde-limitations.md) for the full list.
 
 ## Will logical replication work with pg_tde?
 
@@ -123,9 +123,13 @@ We advise encrypting the whole database only if all your data is sensitive, like
 
 ## What cipher mechanisms are used by pg_tde?
 
-`pg_tde` currently uses a AES-CBC-128 algorithm. First the internal keys in the datafile are encrypted using the principal key with AES-CBC-128, then the file data itself is again encrypted using AES-CBC-128 with the internal key.
+`pg_tde` uses AES in three different modes:
 
-For WAL encryption, AES-CTR-128 is used.
+* Data files are encrypted with the internal key using **AES-CBC** (128 or 256 bits).
+* WAL is encrypted with the internal key using **AES-CTR** (128 or 256 bits).
+* Internal keys are wrapped with the principal key using **AES-GCM** (128 or 256 bits).
+
+The key length is controlled by the [`pg_tde.cipher`](variables.md#pg_tdecipher) GUC. AES-256 support was added in `pg_tde` 2.2.0.
 
 ## Is post-quantum encryption supported?
 
@@ -145,8 +149,8 @@ Since the `SET ACCESS METHOD` command drops hint bits and this may affect the pe
 
 You must restart the database in the following cases to apply the changes:
 
-* after you enabled the `pg_tde` extension
-* when enabling WAL encryption
+* after adding `pg_tde` to `shared_preload_libraries` (the `CREATE EXTENSION` statement itself does not require a restart)
+* when enabling or disabling WAL encryption (`pg_tde.wal_encrypt`)
 
 After that, no database restart is required. When you create or alter the table using the `tde_heap` access method, the files are marked as those that require encryption. The encryption happens at the storage manager level, before a transaction is written to disk. Read more about [how tde_heap works](index/table-access-method.md#how-tde_heap-works-with-pg_tde).
 

@@ -18,7 +18,7 @@ You need the `percona-release` repository management tool that enables the desir
 2. Enable the repository:
 
     ```{.bash data-prompt="$"}
-    sudo percona-release enable-only ppg-{{pgversion17}}
+    sudo percona-release enable-only ppg-{{pgversion}}
     ```
 
 ## Install pg_tde {.power-number}

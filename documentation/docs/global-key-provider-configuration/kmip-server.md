@@ -16,33 +16,34 @@ For testing purposes, you can use a lightweight PyKMIP server, which enables eas
 
 ```sql
 SELECT pg_tde_add_global_key_provider_kmip(
-    'provider-name',
-    'kmip-IP', 
-    `port`,
-    '/path_to/server_certificate.pem', 
-    '/path_to/client_cert.pem',
-    '/path_to/client_key.pem'
+    provider_name  => 'provider-name',
+    kmip_host      => 'kmip-IP',
+    kmip_port      => 5696,
+    kmip_cert_path => '/path/to/client_cert.pem',
+    kmip_key_path  => '/path/to/client_key.pem',
+    kmip_ca_path   => '/path/to/server_ca.pem'
 );
 ```
 
 ## Parameter descriptions
 
-* `provider-name` is the name of the provider. You can specify any name, it's for you to identify the provider
-* `kmip-IP` is the IP address of a domain name of the KMIP server
-* `port` is the port to communicate with the KMIP server. Typically used port is 5696
-* `server-certificate` is the path to the certificate file for the KMIP server
-* `client_cert` is the path to the client certificate.
-* `client_key` is the path to the client key.
+* `provider_name` is the name of the provider. You can specify any name, it's for you to identify the provider
+* `kmip_host` is the IP address or domain name of the KMIP server
+* `kmip_port` is the port to communicate with the KMIP server. Typically used port is 5696
+* `kmip_cert_path` is the path to the client certificate.
+* `kmip_key_path` is the path to the client key.
+* `kmip_ca_path` is the path to the CA certificate used to validate the KMIP server's certificate. For self-signed test setups this may be the server's own certificate.
 
 The following example is for testing purposes only.
 
 ```sql
 SELECT pg_tde_add_global_key_provider_kmip(
-    'kmip','127.0.0.1', 
-    5696, 
-    '/tmp/server_certificate.pem', 
-    '/tmp/client_cert_jane_doe.pem',
-    '/tmp/client_key_jane_doe.pem'
+    provider_name  => 'kmip',
+    kmip_host      => '127.0.0.1',
+    kmip_port      => 5696,
+    kmip_cert_path => '/tmp/client_cert_jane_doe.pem',
+    kmip_key_path  => '/tmp/client_key_jane_doe.pem',
+    kmip_ca_path   => '/tmp/server_certificate.pem'
 );
 ```
 

@@ -16,7 +16,7 @@ Use the following techniques to enforce the secure use of `pg_tde`.
 
 ### 1. Enforce encryption across the server
 
-To enforce encryption cluster-wide, set the [`pg_tde.enforce_encryption`](../variables.md/#pg_tdeenforce_encryption) variable in `postgresql.conf`:
+To enforce encryption cluster-wide, set the [`pg_tde.enforce_encryption`](../variables.md#pg_tdeenforce_encryption) variable in `postgresql.conf`:
 
 ```ini
 pg_tde.enforce_encryption = on

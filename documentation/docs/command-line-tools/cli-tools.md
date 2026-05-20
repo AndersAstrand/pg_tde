@@ -7,11 +7,12 @@ The `pg_tde` extension provides a set of command-line utilities designed specifi
 
 ## New `pg_tde` specific tools
 
-These tools are introduced exclusively by `pg_tde` to support key rotation and WAL encryption workflows:
+These tools are introduced exclusively by `pg_tde` to support key rotation, WAL encryption and upgrade workflows:
 
 * [pg_tde_change_key_provider](./pg-tde-change-key-provider.md): change the encryption key provider for a database
 * [pg_tde_archive_decrypt](./pg-tde-archive-decrypt.md): decrypts WAL before archiving
 * [pg_tde_restore_encrypt](./pg-tde-restore-encrypt.md): a custom restore command for making sure the restored WAL is encrypted
+* [pg_tde_upgrade](./pg-tde-upgrade.md) (new in 2.2.0): wraps `pg_upgrade` to perform major version upgrades of clusters with `pg_tde`
 
 ## Tools for working with `pg_tde`-encrypted data
 
@@ -20,6 +21,5 @@ These tools are modified versions of standard PostgreSQL utilities that include 
 * [pg_tde_checksums](./pg-tde-checksums.md): verify data checksums (non-encrypted files only)
 * [pg_tde_waldump](./pg-tde-waldump.md): inspect and decrypt WAL files
 * [pg_tde_basebackup](../how-to/backup-wal-enabled.md): create base backups that include encrypted data
-* pg_tde_resetwal: reset the WAL for clusters using `pg_tde`
-* pg_tde_rewind: rewind clusters that use encrypted WAL
-* [pg_tde_upgrade](./pg-tde-upgrade.md): perform major version upgrades of clusters with `pg_tde`
+* `pg_tde_resetwal`: reset the WAL for clusters using `pg_tde`. Behaves like `pg_resetwal`; pass `--help` for usage.
+* `pg_tde_rewind`: rewind clusters that use encrypted WAL. Behaves like `pg_rewind`; pass `--help` for usage. See [Limitations of pg_tde](../index/tde-limitations.md#pg_rewind-and-pg_tde_rewind) before using it.

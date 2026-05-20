@@ -53,7 +53,7 @@ sudo systemctl restart postgresql
 - On RHEL and derivatives:
 
 ```sh
-sudo systemctl restart postgresql-(pg-version)
+sudo systemctl restart postgresql-<version>
 ```
 
 ## Step 3. Uninstall the `pg_tde` shared library
@@ -109,11 +109,11 @@ c. Restart the `postgresql` cluster to apply the changes:
 - On RHEL and derivatives:
 
     ```sh
-    sudo systemctl restart postgresql-(pg-version)
+    sudo systemctl restart postgresql-<version>
     ```
 
     !!! note
-        The service name may differ depending on your distribution and PostgreSQL version.nod
+        The service name may differ depending on your distribution and PostgreSQL version.
 
 ## Step 4. (Optional but recommended) Clean up configuration
 

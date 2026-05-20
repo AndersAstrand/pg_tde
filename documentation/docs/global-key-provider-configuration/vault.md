@@ -68,11 +68,11 @@ This creates a `tde/` mount for storing encrypted keys.
 
     ```sql
     SELECT pg_tde_add_global_key_provider_vault_v2(
-        'vault-ns',
-        'https://127.0.0.1:8200',
-        'pgns/tde/data/global-key',
-        '/etc/postgresql/secrets/vault_token.txt',
-        NULL
+        provider_name    => 'vault-ns',
+        vault_url        => 'https://127.0.0.1:8200',
+        vault_mount_path => 'pgns/tde/data/global-key',
+        vault_token_path => '/etc/postgresql/secrets/vault_token.txt',
+        vault_ca_path    => NULL
     );
     ```
 
@@ -160,11 +160,11 @@ In the PostgreSQL container, connect `pg_tde` to Vault using:
 
 ```sql
 SELECT pg_tde_add_global_key_provider_vault_v2(
-  'vault-provider',
-  'http://vault:8200',
-  'tde/data/global-key',
-  '/etc/postgresql/secrets/vault_token.txt',
-  NULL
+  provider_name    => 'vault-provider',
+  vault_url        => 'http://vault:8200',
+  vault_mount_path => 'tde/data/global-key',
+  vault_token_path => '/etc/postgresql/secrets/vault_token.txt',
+  vault_ca_path    => NULL
 );
 ```
 
@@ -226,31 +226,31 @@ select * from secure_data;
 
 ```sql
 SELECT pg_tde_add_global_key_provider_vault_v2(
-    'provider-name',
-    'url',
-    'mount',
-    'secret_token_path',
-    'ca_path'
+    provider_name    => 'provider-name',
+    vault_url        => 'url',
+    vault_mount_path => 'mount',
+    vault_token_path => 'secret_token_path',
+    vault_ca_path    => 'ca_path'
 );
 ```
 
 ## Parameter descriptions
 
-* `provider-name` is the name to identify this key provider
-* `secret_token_path` is a path to the file that contains an access token with read and write access to the above mount point
-* `url` is the URL of the Vault server
-* `mount` is the mount point where the keyring should store the keys
-* [optional] `ca_path` is the path of the CA file used for SSL verification
+* `provider_name` is the name to identify this key provider
+* `vault_url` is the URL of the Vault server
+* `vault_mount_path` is the mount point where the keyring should store the keys
+* `vault_token_path` is a path to the file that contains an access token with read and write access to the above mount point
+* [optional] `vault_ca_path` is the path of the CA file used for SSL verification
 
 The following example is for testing purposes only. Use secure tokens and proper SSL validation in production environments:
 
 ```sql
 SELECT pg_tde_add_global_key_provider_vault_v2(
-    'my-vault',
-    'https://vault.vault.svc.cluster.local:8200',
-    'secret/data',
-    '/path/to/token_file',
-    '/path/to/ca_cert.pem'
+    provider_name    => 'my-vault',
+    vault_url        => 'https://vault.vault.svc.cluster.local:8200',
+    vault_mount_path => 'secret/data',
+    vault_token_path => '/path/to/vault_token.txt',
+    vault_ca_path    => '/path/to/ca_cert.pem'
 );
 ```
 

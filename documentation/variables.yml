@@ -3,7 +3,7 @@
 latestreleasenotes: 'release-notes-v2.2.0'
 tdeversion: '2.2.0'
 release: '2.2.0'
-pgversion17: '18'
+pgversion: '18'
 tdebranch: release-2.2.0
 
 date:

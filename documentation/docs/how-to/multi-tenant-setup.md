@@ -26,13 +26,13 @@ Load the `pg_tde` at startup time. The extension requires additional shared memo
     * On Debian and Ubuntu:
 
        ```sh
-       sudo systemctl restart postgresql-17
+       sudo systemctl restart postgresql.service
        ```
 
     * On RHEL and derivatives
 
        ```sh
-       sudo systemctl restart postgresql-17
+       sudo systemctl restart postgresql-<version>
        ```
 
 3. Create the extension using the [CREATE EXTENSION :octicons-link-external-16:](https://www.postgresql.org/docs/current/sql-createextension.html) command. You must have the privileges of a superuser or a database owner to use this command. Connect to `psql` as a superuser for a database and run the following command:
@@ -67,34 +67,34 @@ You must do these steps for every database where you have created the extension.
 
         ```sql
         SELECT pg_tde_add_database_key_provider_kmip(
-          'provider-name',
-          'kmip-addr', 
-          `port`, 
-          '/path_to/client_cert.pem', 
-          '/path_to/client_key.pem', 
-          '/path_to/server_certificate.pem'
+          provider_name  => 'provider-name',
+          kmip_host      => 'kmip-addr',
+          kmip_port      => 5696,
+          kmip_cert_path => '/path/to/client_cert.pem',
+          kmip_key_path  => '/path/to/client_key.pem',
+          kmip_ca_path   => '/path/to/server_ca.pem'
         );
         ```
 
         where:
 
-        * `provider-name` is the name of the provider. You can specify any name, it's for you to identify the provider.
-        * `kmip-addr` is the IP address of a domain name of the KMIP server
-        * `port` is the port to communicate with the KMIP server. Typically used port is 5696.
-        * `server-certificate` is the path to the certificate file for the KMIP server.
-        * `client-cert` is the path to the client certificate.
-        * `client-key` is the path to the client key.
+        * `provider_name` is the name of the provider. You can specify any name, it's for you to identify the provider.
+        * `kmip_host` is the IP address or domain name of the KMIP server
+        * `kmip_port` is the port to communicate with the KMIP server. Typically used port is 5696.
+        * `kmip_cert_path` is the path to the client certificate.
+        * `kmip_key_path` is the path to the client key.
+        * `kmip_ca_path` is the path to the CA certificate used to validate the KMIP server's certificate. For self-signed test setups this may be the server's own certificate.
 
         <i warning>:material-information: Warning:</i> This example is for testing purposes only:
 
         ```sql
         SELECT pg_tde_add_database_key_provider_kmip(
-            'kmip', 
-            '127.0.0.1', 
-            5696, 
-            '/tmp/client_cert_jane_doe.pem', 
-            '/tmp/client_key_jane_doe.pem', 
-            '/tmp/server_certificate.pem'
+            provider_name  => 'kmip',
+            kmip_host      => '127.0.0.1',
+            kmip_port      => 5696,
+            kmip_cert_path => '/tmp/client_cert_jane_doe.pem',
+            kmip_key_path  => '/tmp/client_key_jane_doe.pem',
+            kmip_ca_path   => '/tmp/server_certificate.pem'
         );
         ```
 
@@ -104,30 +104,30 @@ You must do these steps for every database where you have created the extension.
 
         ```sql
         SELECT pg_tde_add_database_key_provider_vault_v2(
-            'provider-name', 
-            'url', 
-            'mount', 
-            'secret_token_path', 
-            'ca_path'
+            provider_name    => 'provider-name',
+            vault_url        => 'url',
+            vault_mount_path => 'mount',
+            vault_token_path => 'secret_token_path',
+            vault_ca_path    => 'ca_path'
         );
         ```
 
         where:
 
-        * `url` is the URL of the Vault server
-        * `mount` is the mount point where the keyring should store the keys
-        * `secret_token_path` is a path to the file that contains an access token with read and write access to the above mount point
-        * [optional] `ca_path` is the path of the CA file used for SSL verification
+        * `vault_url` is the URL of the Vault server
+        * `vault_mount_path` is the mount point where the keyring should store the keys
+        * `vault_token_path` is a path to the file that contains an access token with read and write access to the above mount point
+        * [optional] `vault_ca_path` is the path of the CA file used for SSL verification
 
         <i warning>:material-information: Warning:</i> This example is for testing purposes only:
 
         ```sql
-        SELECT pg_tde_add_database_key_provider_file_vault_v2(
-            'my-vault',
-            'http://vault.vault.svc.cluster.local:8200',
-            'secret/data',
-            'hvs.zPuyktykA...example...ewUEnIRVaKoBzs2', 
-            NULL
+        SELECT pg_tde_add_database_key_provider_vault_v2(
+            provider_name    => 'my-vault',
+            vault_url        => 'http://vault.vault.svc.cluster.local:8200',
+            vault_mount_path => 'secret/data',
+            vault_token_path => '/etc/postgresql/secrets/vault_token.txt',
+            vault_ca_path    => NULL
         );
         ```
 
@@ -138,7 +138,7 @@ You must do these steps for every database where you have created the extension.
         ```sql
         SELECT pg_tde_add_database_key_provider_file(
             'provider-name', 
-            '/path/to/the/keyring/data.file'
+            '/path/to/keyring.dat'
         );
         ```
 

@@ -23,7 +23,7 @@ pg_tde_restore_encrypt SOURCE-NAME DEST-PATH RESTORE-COMMAND
 
 * `SOURCE-NAME`: name of the WAL file to retrieve from the archive
 * `DEST-PATH`: path where the encrypted WAL file should be written
-* `RESTORE-COMMAND`: restore command to wrap; `%p` and `%f` are replaced with the WAL file name and path to write the unencrypted WAL, respectively
+* `RESTORE-COMMAND`: restore command to wrap. `%p` is replaced with the path where the unencrypted WAL should be written, and `%f` with the WAL file name.
 
 ## Options
 

@@ -52,39 +52,41 @@ The Vault provider connects to a HashiCorp Vault or an OpenBao server, and store
 
 Use the following functions to add the Vault provider:
 
+The examples below use PostgreSQL's named-argument syntax (`name => value`), which is order-independent and self-documenting. Positional arguments work too, but for these multi-argument functions named arguments are recommended.
+
 ```sql
 SELECT pg_tde_add_database_key_provider_vault_v2(
-  'provider-name',
-  'url',
-  'mount',
-  'secret_token_path',
-  'ca_path'
+  provider_name    => 'provider-name',
+  vault_url        => 'url',
+  vault_mount_path => 'mount',
+  vault_token_path => 'secret_token_path',
+  vault_ca_path    => 'ca_path'
 );
 
 SELECT pg_tde_add_global_key_provider_vault_v2(
-  'provider-name',
-  'url',
-  'mount',
-  'secret_token_path',
-  'ca_path'
+  provider_name    => 'provider-name',
+  vault_url        => 'url',
+  vault_mount_path => 'mount',
+  vault_token_path => 'secret_token_path',
+  vault_ca_path    => 'ca_path'
 );
 
 SELECT pg_tde_add_database_key_provider_vault_v2(
-  'provider-name',
-  'url',
-  'mount',
-  'secret_token_path',
-  'ca_path',
-  'namespace'
+  provider_name    => 'provider-name',
+  vault_url        => 'url',
+  vault_mount_path => 'mount',
+  vault_token_path => 'secret_token_path',
+  vault_ca_path    => 'ca_path',
+  vault_namespace  => 'namespace'
 );
 
 SELECT pg_tde_add_global_key_provider_vault_v2(
-  'provider-name',
-  'url',
-  'mount',
-  'secret_token_path',
-  'ca_path',
-  'namespace'
+  provider_name    => 'provider-name',
+  vault_url        => 'url',
+  vault_mount_path => 'mount',
+  vault_token_path => 'secret_token_path',
+  vault_ca_path    => 'ca_path',
+  vault_namespace  => 'namespace'
 );
 ```
 
@@ -92,47 +94,48 @@ These functions change the Vault provider:
 
 ```sql
 SELECT pg_tde_change_database_key_provider_vault_v2(
-  'provider-name',
-  'url',
-  'mount',
-  'secret_token_path',
-  'ca_path'
+  provider_name    => 'provider-name',
+  vault_url        => 'url',
+  vault_mount_path => 'mount',
+  vault_token_path => 'secret_token_path',
+  vault_ca_path    => 'ca_path'
 );
 
 SELECT pg_tde_change_global_key_provider_vault_v2(
-  'provider-name',
-  'url',
-  'mount',
-  'secret_token_path',
-  'ca_path'
+  provider_name    => 'provider-name',
+  vault_url        => 'url',
+  vault_mount_path => 'mount',
+  vault_token_path => 'secret_token_path',
+  vault_ca_path    => 'ca_path'
 );
+
 SELECT pg_tde_change_database_key_provider_vault_v2(
-  'provider-name',
-  'url',
-  'mount',
-  'secret_token_path',
-  'ca_path',
-  'namespace'
+  provider_name    => 'provider-name',
+  vault_url        => 'url',
+  vault_mount_path => 'mount',
+  vault_token_path => 'secret_token_path',
+  vault_ca_path    => 'ca_path',
+  vault_namespace  => 'namespace'
 );
 
 SELECT pg_tde_change_global_key_provider_vault_v2(
-  'provider-name',
-  'url',
-  'mount',
-  'secret_token_path',
-  'ca_path',
-  'namespace'
+  provider_name    => 'provider-name',
+  vault_url        => 'url',
+  vault_mount_path => 'mount',
+  vault_token_path => 'secret_token_path',
+  vault_ca_path    => 'ca_path',
+  vault_namespace  => 'namespace'
 );
 ```
 
 where:
 
-* `provider-name` is the name of the key provider
-* `url` is the URL of the Vault server
-* `mount` is the mount point on the Vault server where the key provider should store the keys
-* `secret_token_path` is a path to the file that contains an access token with read and write access to the above mount point
-* **[optional]** `ca_path` is the path of the CA file used for SSL verification
-* **[namespace]** `namespace` is the path of the namespace when using [Vault with namespaes](https://developer.hashicorp.com/vault/docs/enterprise/namespaces)
+* `provider_name` is the name of the key provider
+* `vault_url` is the URL of the Vault server
+* `vault_mount_path` is the mount point on the Vault server where the key provider should store the keys
+* `vault_token_path` is a path to the file that contains an access token with read and write access to the above mount point
+* **[optional]** `vault_ca_path` is the path of the CA file used for SSL verification
+* **[optional]** `vault_namespace` is the path of the namespace when using [Vault with namespaces](https://developer.hashicorp.com/vault/docs/enterprise/namespaces)
 
 #### Add or modify KMIP providers
 
@@ -140,23 +143,25 @@ The KMIP provider uses a remote KMIP server.
 
 Use these functions to add a KMIP provider:
 
+As with the Vault functions above, named-argument syntax is recommended for these 6-argument calls.
+
 ```sql
 SELECT pg_tde_add_database_key_provider_kmip(
-  'provider-name',
-  'kmip-addr',
-  port,
-  '/path_to/client_cert.pem',
-  '/path_to/client_key.pem',
-  '/path_to/server_certificate.pem'
+  provider_name  => 'provider-name',
+  kmip_host      => 'kmip-addr',
+  kmip_port      => 5696,
+  kmip_cert_path => '/path/to/client_cert.pem',
+  kmip_key_path  => '/path/to/client_key.pem',
+  kmip_ca_path   => '/path/to/server_ca.pem'
 );
 
 SELECT pg_tde_add_global_key_provider_kmip(
-  'provider-name',
-  'kmip-addr',
-  port,
-  '/path_to/client_certificate.pem',
-  '/path_to/client_key.pem',
-  '/path_to/server_certificate.pem'
+  provider_name  => 'provider-name',
+  kmip_host      => 'kmip-addr',
+  kmip_port      => 5696,
+  kmip_cert_path => '/path/to/client_cert.pem',
+  kmip_key_path  => '/path/to/client_key.pem',
+  kmip_ca_path   => '/path/to/server_ca.pem'
 );
 ```
 
@@ -164,33 +169,32 @@ These functions change the KMIP provider:
 
 ```sql
 SELECT pg_tde_change_database_key_provider_kmip(
-  'provider-name',
-  'kmip-addr',
-  port,
-  '/path_to/client_cert.pem',
-  '/path_to/client_key.pem',
-  '/path_to/server_certificate.pem'
+  provider_name  => 'provider-name',
+  kmip_host      => 'kmip-addr',
+  kmip_port      => 5696,
+  kmip_cert_path => '/path/to/client_cert.pem',
+  kmip_key_path  => '/path/to/client_key.pem',
+  kmip_ca_path   => '/path/to/server_ca.pem'
 );
 
 SELECT pg_tde_change_global_key_provider_kmip(
-  'provider-name',
-  'kmip-addr',
-  port,
-  '/path_to/client_certificate.pem',
-  '/path_to/client_key.pem',
-  '/path_to/server_certificate.pem'
+  provider_name  => 'provider-name',
+  kmip_host      => 'kmip-addr',
+  kmip_port      => 5696,
+  kmip_cert_path => '/path/to/client_cert.pem',
+  kmip_key_path  => '/path/to/client_key.pem',
+  kmip_ca_path   => '/path/to/server_ca.pem'
 );
 ```
 
 where:
 
-* `provider-name` is the name of the provider
-* `kmip-addr` is the IP address or domain name of the KMIP server
-* `port` is the port to communicate with the KMIP server.
-  Most KMIP servers use port 5696.
-* `server-certificate` is the path to the certificate file for the KMIP server.
-* `client-certificate` is the path to the client certificate.
-* `client-key` is the path to the client key.
+* `provider_name` is the name of the provider
+* `kmip_host` is the IP address or domain name of the KMIP server
+* `kmip_port` is the port to communicate with the KMIP server. Most KMIP servers use port 5696.
+* `kmip_cert_path` is the path to the client certificate.
+* `kmip_key_path` is the path to the client key.
+* `kmip_ca_path` is the path to the CA certificate used to validate the KMIP server's certificate. For self-signed test setups this may be the server's own certificate.
 
 !!! note
     The specified access parameters require permission to read and write keys at the server.
@@ -209,12 +213,12 @@ Add a local key file provider:
 ```sql
 SELECT pg_tde_add_database_key_provider_file(
   'provider-name',
-  '/path/to/the/key/provider/data.file'
+  '/path/to/keyring.dat'
 );
 
 SELECT pg_tde_add_global_key_provider_file(
   'provider-name',
-  '/path/to/the/key/provider/data.file'
+  '/path/to/keyring.dat'
 );
 ```
 
@@ -223,19 +227,19 @@ Change a local key file provider:
 ```sql
 SELECT pg_tde_change_database_key_provider_file(
   'provider-name',
-  '/path/to/the/key/provider/data.file'
+  '/path/to/keyring.dat'
 );
 
 SELECT pg_tde_change_global_key_provider_file(
   'provider-name',
-  '/path/to/the/key/provider/data.file'
+  '/path/to/keyring.dat'
 );
 ```
 
 where:
 
 * `provider-name` is the name of the provider. You can specify any name, it's for you to identify the provider.
-* `/path/to/the/key/provider/data.file` is the path to the key provider file.
+* `/path/to/keyring.dat` is the path to the key provider file.
 
 ### Delete a provider
 

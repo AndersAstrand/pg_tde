@@ -37,10 +37,10 @@ The steps below provide an example on how to add a [database-scoped key provider
     ```
 
     !!! tip
-        You can check the default key information (such as the date and time of creation). Run:
+        You can check the current database key information (such as the date and time of creation). Run:
 
         ```sql
-        SELECT pg_tde_default_key_info();
+        SELECT pg_tde_key_info();
         ```
 
 4. Now, create a table using [tde_heap](../index/table-access-method.md#how-tde_heap-works-with-pg_tde):
@@ -49,20 +49,20 @@ The steps below provide an example on how to add a [database-scoped key provider
     CREATE TABLE customer_table (a INT) USING tde_heap;
     ```
 
-    The newly created table is encrypted with the default key you have set (`my_default_key`).
+    The newly created table is encrypted with the principal key you have set (`my_default_key`).
 
     !!! tip
         To check if your created table is encrypted with tde_heap, run:
 
         ```sql
-        \d+ test1
+        \d+ customer_table
         ```
 
         If `Access method: tde_heap`, then your table is encrypted.
 
         ??? "Example output"
-                postgres=# \d+ test1
-                                                    Table "public.test1"
+                postgres=# \d+ customer_table
+                                                    Table "public.customer_table"
                 Column |  Type   | Collation | Nullable | Default | Storage | Compression | Stats target | Description
                 --------+---------+-----------+----------+---------+---------+-------------+--------------+-------------
                 a      | integer |           |          |         | plain   |             |              |

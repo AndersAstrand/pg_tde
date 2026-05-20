@@ -36,7 +36,7 @@ Restart the `postgresql` cluster to apply the configuration.
 * On RHEL and derivatives:
 
        ```sh
-       sudo systemctl restart postgresql-17
+       sudo systemctl restart postgresql-<version>
        ```
 
 ## 3. Create the extension
